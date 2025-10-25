@@ -1,14 +1,10 @@
-# Nama file: chat_app.py
-
 import socket
 import sys
-from des_logic import run_des  # Mengimpor fungsi DES dari file logic
+from des_logic import run_des  
 
-# --- Konfigurasi ---
-HOST = '127.0.0.1'  # Alamat localhost
-PORT = 65432        # Port untuk koneksi
-KEY = "mykey123"    # Kunci DES (HARUS 8 karakter dan SAMA di kedua device)
-# --------------------
+HOST = '127.0.0.1'  
+PORT = 65432        
+KEY = "mykey123"    
 
 def start_server():
     """Berperan sebagai Device 1 (Server) - Menerima dulu, baru membalas."""
@@ -24,13 +20,11 @@ def start_server():
             print("Ketik 'q' untuk keluar kapan saja.\n")
 
             while True:
-                # 1. Menerima data terenkripsi dari Device 2
                 data_hex = conn.recv(1024).decode('utf-8')
                 if not data_hex:
                     print("Device 2 menutup koneksi.")
                     break
                 
-                # 2. Dekripsi data
                 try:
                     decrypted_msg = run_des(data_hex, KEY, 'decrypt')
                     print(f"[Device 2]: {decrypted_msg}")
@@ -41,9 +35,8 @@ def start_server():
                         
                 except Exception as e:
                     print(f"Error dekripsi: {e}. Data diterima: {data_hex}")
-                    continue # Lanjut ke loop berikutnya
+                    continue 
 
-                # 3. Mengirim balasan (Input, Enkripsi, Kirim)
                 msg_to_send = input("[Device 1] Balas: ")
                 encrypted_msg = run_des(msg_to_send, KEY, 'encrypt')
                 conn.sendall(encrypted_msg.encode('utf-8'))
@@ -67,7 +60,6 @@ def start_client():
         print("Ketik 'q' untuk keluar kapan saja.\n")
 
         while True:
-            # 1. Mengirim pesan dulu (Input, Enkripsi, Kirim)
             msg_to_send = input("[Device 2] Kirim: ")
             encrypted_msg = run_des(msg_to_send, KEY, 'encrypt')
             s.sendall(encrypted_msg.encode('utf-8'))
@@ -76,13 +68,11 @@ def start_client():
                 print("Menutup koneksi.")
                 break
 
-            # 2. Menerima balasan terenkripsi dari Device 1
             data_hex = s.recv(1024).decode('utf-8')
             if not data_hex:
                 print("Device 1 menutup koneksi.")
                 break
 
-            # 3. Dekripsi balasan
             try:
                 decrypted_msg = run_des(data_hex, KEY, 'decrypt')
                 print(f"[Device 1]: {decrypted_msg}")
@@ -93,7 +83,7 @@ def start_client():
                     
             except Exception as e:
                 print(f"Error dekripsi: {e}. Data diterima: {data_hex}")
-                continue # Lanjut ke loop berikutnya
+                continue 
 
 if __name__ == "__main__":
     if len(KEY) != 8:
