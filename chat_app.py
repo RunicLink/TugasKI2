@@ -26,8 +26,10 @@ def start_server():
                     break
                 
                 try:
+                    print(f"Encrypted Message from Device 2: {data_hex}")
+
                     decrypted_msg = run_des(data_hex, KEY, 'decrypt')
-                    print(f"[Device 2]: {decrypted_msg}")
+                    print(f"[Device 2]: {decrypted_msg}\n")
                     
                     if decrypted_msg.lower() == 'q':
                         print("Device 2 meminta keluar.")
@@ -74,8 +76,10 @@ def start_client():
                 break
 
             try:
+                print(f"Encrypted Message from Decive 1: {data_hex}")
+
                 decrypted_msg = run_des(data_hex, KEY, 'decrypt')
-                print(f"[Device 1]: {decrypted_msg}")
+                print(f"[Device 1]: {decrypted_msg} \n")
                 
                 if decrypted_msg.lower() == 'q':
                     print("Device 1 meminta keluar.")
