@@ -41,6 +41,8 @@ def start_server():
 
                 msg_to_send = input("[Device 1] Balas: ")
                 encrypted_msg = run_des(msg_to_send, KEY, 'encrypt')
+                print(f"Sending Encrypted Message: {encrypted_msg}\n")
+               
                 conn.sendall(encrypted_msg.encode('utf-8'))
                 
                 if msg_to_send.lower() == 'q':
@@ -64,6 +66,8 @@ def start_client():
         while True:
             msg_to_send = input("[Device 2] Kirim: ")
             encrypted_msg = run_des(msg_to_send, KEY, 'encrypt')
+            print(f"Sending Encrypted Message: {encrypted_msg}")
+            
             s.sendall(encrypted_msg.encode('utf-8'))
             
             if msg_to_send.lower() == 'q':
